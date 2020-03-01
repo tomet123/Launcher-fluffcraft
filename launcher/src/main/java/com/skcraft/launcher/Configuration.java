@@ -9,6 +9,8 @@ package com.skcraft.launcher;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.util.UUID;
+
 /**
  * The configuration for the launcher.
  * </p>
@@ -21,7 +23,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Configuration {
 
-    private boolean offlineEnabled = false;
+    private boolean offlineEnabled = true;
     private String jvmPath;
     private String jvmArgs;
     private int minMemory = 1024;
@@ -34,10 +36,14 @@ public class Configuration {
     private int proxyPort = 8080;
     private String proxyUsername;
     private String proxyPassword;
-    private String gameKey;
     private boolean serverEnabled = false;
     private String serverHost;
     private int serverPort = 25565;
+    private boolean reportHW = true;
+    private String adminTeamUser = "";
+    private String adminTeamPassword = "";
+    private String adminToken = "";
+    private String identification = UUID.randomUUID().toString();
 
     @Override
     public boolean equals(Object o) {

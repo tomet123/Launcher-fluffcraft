@@ -10,6 +10,7 @@ import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.swing.LinedBoxPanel;
 import com.skcraft.launcher.swing.MessageLog;
 import com.skcraft.launcher.swing.SwingHelper;
+import com.skcraft.launcher.util.PasteUtils;
 import com.skcraft.launcher.util.PastebinPoster;
 import com.skcraft.launcher.util.SharedLocale;
 import lombok.Getter;
@@ -133,7 +134,7 @@ public class ConsoleFrame extends JFrame {
         // Not really bytes!
         messageLog.log(tr("console.pasteUploading", text.length()), messageLog.asHighlighted());
 
-        PastebinPoster.paste(text, new PastebinPoster.PasteCallback() {
+       /* PastebinPoster.paste(text, new PastebinPoster.PasteCallback() {
             @Override
             public void handleSuccess(String url) {
                 messageLog.log(tr("console.pasteUploaded", url), messageLog.asHighlighted());
@@ -144,7 +145,15 @@ public class ConsoleFrame extends JFrame {
             public void handleError(String err) {
                 messageLog.log(tr("console.pasteFailed", err), messageLog.asError());
             }
-        });
+        });*/
+        String out = PasteUtils.paste(text);
+        if(out==null){
+            messageLog.log(tr("console.pasteFailed"), messageLog.asError());
+        }else{
+            messageLog.log(tr("console.pasteUploaded", out), messageLog.asHighlighted());
+            SwingHelper.openURL(out, messageLog);
+        }
+
     }
 
     public static void showMessages() {

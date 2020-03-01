@@ -39,12 +39,15 @@ public class ConfigurationDialog extends JDialog {
     private final JSpinner heightSpinner = new JSpinner();
     private final FormPanel proxySettingsPanel = new FormPanel();
     private final JCheckBox useProxyCheck = new JCheckBox(SharedLocale.tr("options.useProxyCheck"));
+    private final JCheckBox sendHwInfoCheck = new JCheckBox(SharedLocale.tr("options.sendHwInfoCheck"));
+    private final JTextField sendHwInfoIdentify = new JTextField();
     private final JTextField proxyHostText = new JTextField();
     private final JSpinner proxyPortText = new JSpinner();
     private final JTextField proxyUsernameText = new JTextField();
     private final JPasswordField proxyPasswordText = new JPasswordField();
     private final FormPanel advancedPanel = new FormPanel();
-    private final JTextField gameKeyText = new JTextField();
+    private final JTextField adminTeamUserText = new JTextField();
+    private final JPasswordField adminTeamPasswordText = new JPasswordField();
     private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
     private final JButton okButton = new JButton(SharedLocale.tr("button.ok"));
     private final JButton cancelButton = new JButton(SharedLocale.tr("button.cancel"));
@@ -78,11 +81,15 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "widowHeight");
         mapper.map(useProxyCheck, "proxyEnabled");
+        mapper.map(sendHwInfoCheck, "reportHW");
         mapper.map(proxyHostText, "proxyHost");
         mapper.map(proxyPortText, "proxyPort");
         mapper.map(proxyUsernameText, "proxyUsername");
         mapper.map(proxyPasswordText, "proxyPassword");
-        mapper.map(gameKeyText, "gameKey");
+        mapper.map(adminTeamUserText, "adminTeamUser");
+        mapper.map(adminTeamPasswordText, "adminTeamPassword");
+        mapper.map(sendHwInfoIdentify, "identification");
+
 
         mapper.copyFromObject();
     }
@@ -111,7 +118,10 @@ public class ConfigurationDialog extends JDialog {
         SwingHelper.removeOpaqueness(proxySettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.proxyTab"), SwingHelper.alignTabbedPane(proxySettingsPanel));
 
-        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.gameKey")), gameKeyText);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.adminUser")), adminTeamUserText);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.adminPassword")), adminTeamPasswordText);
+        advancedPanel.addRow(sendHwInfoCheck);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.identify")), sendHwInfoIdentify);
         SwingHelper.removeOpaqueness(advancedPanel);
         tabbedPane.addTab(SharedLocale.tr("options.advancedTab"), SwingHelper.alignTabbedPane(advancedPanel));
 
@@ -150,6 +160,8 @@ public class ConfigurationDialog extends JDialog {
                 ConsoleFrame.showMessages();
             }
         });
+
+        sendHwInfoIdentify.setEditable(false);
     }
 
     /**

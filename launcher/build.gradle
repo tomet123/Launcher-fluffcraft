@@ -18,6 +18,10 @@ dependencies {
     compile 'com.beust:jcommander:1.32'
     compile 'com.miglayout:miglayout:3.7.4'
     compile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'org.apache.httpcomponents:httpclient:4.5.10'
+    compile group: 'com.github.oshi', name: 'oshi-core', version: '4.4.2'
+    compile group: 'org.json', name: 'json', version: '20090211'
+
 }
 
 processResources {

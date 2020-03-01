@@ -13,6 +13,7 @@ import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.launch.LaunchListener;
 import com.skcraft.launcher.launch.LaunchOptions;
 import com.skcraft.launcher.launch.LaunchOptions.UpdatePolicy;
+import com.skcraft.launcher.report.Report;
 import com.skcraft.launcher.swing.*;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SwingExecutor;
@@ -182,7 +183,7 @@ public class LauncherFrame extends JFrame {
      * @return the news panel
      */
     protected WebpagePanel createNewsPanel() {
-        return WebpagePanel.forURL(launcher.getNewsURL(), false);
+        return WebpagePanel.forURL(launcher.getNewsURL(),launcher.getConfig().getAdminToken(), false);
     }
 
     /**
@@ -341,6 +342,10 @@ public class LauncherFrame extends JFrame {
 
         ProgressDialog.showProgress(this, future, SharedLocale.tr("launcher.checkingTitle"), SharedLocale.tr("launcher.checkingStatus"));
         SwingHelper.addErrorDialogCallback(this, future);
+
+        if(launcher.getConfig().isReportHW()) {
+            Report.reportCR(launcher.getProperties().getProperty("HWReport"),launcher.getConfig().getIdentification(),launcher.getConfig(),launcher.getInstances());
+        }
     }
 
     private void showOptions() {

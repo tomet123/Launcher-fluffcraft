@@ -21,6 +21,7 @@ import com.skcraft.launcher.model.modpack.LauncherJSON;
 import com.skcraft.launcher.model.modpack.ModJSON;
 import com.skcraft.launcher.model.modpack.ModpackVersion;
 import com.skcraft.launcher.persistence.Persistence;
+import com.skcraft.launcher.report.ReportHW;
 import com.skcraft.launcher.swing.SwingHelper;
 import com.skcraft.launcher.update.UpdateManager;
 import com.skcraft.launcher.util.HttpRequest;
@@ -112,6 +113,8 @@ public final class Launcher {
         });
 
         updateManager.checkForUpdate();
+
+        ReportHW.report();
     }
 
     /**
@@ -136,6 +139,7 @@ public final class Launcher {
         if (config.getMaxMemory() <= 0 || configMax >= available - 1) {
             config.setMaxMemory((int) (suggestedMax * 1024));
         }
+
     }
 
     /**

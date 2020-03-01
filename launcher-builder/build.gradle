@@ -12,6 +12,8 @@ dependencies {
     compile project(':launcher')
     compile 'org.tukaani:xz:1.0'
     compile 'org.apache.commons:commons-compress:1.9'
+    compile group: 'org.json', name: 'json', version: '20190722'
+
 }
 
 shadowJar {

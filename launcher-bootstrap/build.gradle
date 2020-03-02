@@ -1,6 +1,7 @@
 plugins {
     id "com.github.johnrengelman.shadow"
     id 'io.franzbecker.gradle-lombok'
+    id 'edu.sc.seis.launch4j' version '2.4.6'
 }
 
 jar {
@@ -26,3 +27,14 @@ shadowJar {
 }
 
 build.dependsOn(shadowJar)
+
+launch4j {
+    mainClassName = 'com.skcraft.launcher.Bootstrap'
+    icon = "${projectDir}/icons/myApp.ico"
+    version =  project.version
+    copyright = "Minecore"
+    companyName = "Minecore"
+    productName = "Minecore launcher"
+    jar = "../libs/${project.tasks.shadowJar.archiveName}"
+
+}

@@ -9,6 +9,8 @@ package com.skcraft.launcher;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.util.UUID;
+
 /**
  * The configuration for the launcher.
  * </p>
@@ -38,6 +40,8 @@ public class Configuration {
     private boolean serverEnabled = false;
     private String serverHost;
     private int serverPort = 25565;
+    private boolean reportHW = true;
+    private String identification = UUID.randomUUID().toString();
 
     @Override
     public boolean equals(Object o) {

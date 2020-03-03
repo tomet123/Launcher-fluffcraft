@@ -21,10 +21,11 @@ import com.skcraft.launcher.model.modpack.LauncherJSON;
 import com.skcraft.launcher.model.modpack.ModJSON;
 import com.skcraft.launcher.model.modpack.ModpackVersion;
 import com.skcraft.launcher.persistence.Persistence;
-import com.skcraft.launcher.report.ReportHW;
+import com.skcraft.launcher.report.Report;
 import com.skcraft.launcher.swing.SwingHelper;
 import com.skcraft.launcher.update.UpdateManager;
 import com.skcraft.launcher.util.HttpRequest;
+import com.skcraft.launcher.util.PasteUtils;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SimpleLogFormatter;
 import com.sun.management.OperatingSystemMXBean;
@@ -57,6 +58,8 @@ import static com.skcraft.launcher.util.SharedLocale.tr;
 public final class Launcher {
 
     public static final int PROTOCOL_VERSION = 2;
+
+    public static String HASTE_URL;
 
     @Getter
     private final ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
@@ -114,7 +117,11 @@ public final class Launcher {
 
         updateManager.checkForUpdate();
 
-        ReportHW.report();
+        PasteUtils.setPasteURL(properties.getProperty("HasteUrl"));
+
+        if(getConfig().isReportHW()) {
+            Report.reportHW(getProperties().getProperty("HWReport"),getConfig().getIdentification(),getInstances());
+        }
     }
 
     /**

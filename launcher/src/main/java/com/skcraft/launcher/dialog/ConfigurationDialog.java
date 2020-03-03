@@ -39,6 +39,8 @@ public class ConfigurationDialog extends JDialog {
     private final JSpinner heightSpinner = new JSpinner();
     private final FormPanel proxySettingsPanel = new FormPanel();
     private final JCheckBox useProxyCheck = new JCheckBox(SharedLocale.tr("options.useProxyCheck"));
+    private final JCheckBox sendHwInfoCheck = new JCheckBox(SharedLocale.tr("options.sendHwInfoCheck"));
+    private final JTextField sendHwInfoIdentify = new JTextField();
     private final JTextField proxyHostText = new JTextField();
     private final JSpinner proxyPortText = new JSpinner();
     private final JTextField proxyUsernameText = new JTextField();
@@ -78,11 +80,14 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "widowHeight");
         mapper.map(useProxyCheck, "proxyEnabled");
+        mapper.map(sendHwInfoCheck, "reportHW");
         mapper.map(proxyHostText, "proxyHost");
         mapper.map(proxyPortText, "proxyPort");
         mapper.map(proxyUsernameText, "proxyUsername");
         mapper.map(proxyPasswordText, "proxyPassword");
         mapper.map(gameKeyText, "gameKey");
+        mapper.map(sendHwInfoIdentify, "identification");
+
 
         mapper.copyFromObject();
     }
@@ -112,6 +117,8 @@ public class ConfigurationDialog extends JDialog {
         tabbedPane.addTab(SharedLocale.tr("options.proxyTab"), SwingHelper.alignTabbedPane(proxySettingsPanel));
 
         advancedPanel.addRow(new JLabel(SharedLocale.tr("options.gameKey")), gameKeyText);
+        advancedPanel.addRow(sendHwInfoCheck);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.identify")), sendHwInfoIdentify);
         SwingHelper.removeOpaqueness(advancedPanel);
         tabbedPane.addTab(SharedLocale.tr("options.advancedTab"), SwingHelper.alignTabbedPane(advancedPanel));
 
@@ -150,6 +157,8 @@ public class ConfigurationDialog extends JDialog {
                 ConsoleFrame.showMessages();
             }
         });
+
+        sendHwInfoIdentify.setEditable(false);
     }
 
     /**

@@ -2,8 +2,10 @@ package com.skcraft.launcher.report;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.skcraft.launcher.Configuration;
 import com.skcraft.launcher.Instance;
 import com.skcraft.launcher.InstanceList;
+import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.PasteUtils;
 import lombok.extern.java.Log;
@@ -19,7 +21,7 @@ import java.util.List;
 @Log
 public class Report {
 
-    public static void reportHW(String url, String identification, InstanceList i){
+    public static void reportHW(String url, String identification, Configuration configuration, InstanceList i){
         try {
             HttpRequest.Form f = HttpRequest.Form.form();
             SystemInfo si = new SystemInfo();
@@ -27,6 +29,7 @@ public class Report {
 
             f.add("TYPE","HW");
             f.add("IDENTIFY",identification);
+            f.add("TOKEN",configuration.getAdminToken());
             f.add("CPU_NAME",hal.getProcessor().getProcessorIdentifier().getName());
             f.add("CPU_F_CORES",hal.getProcessor().getPhysicalProcessorCount()+"");
             f.add("CPU_L_CORES",hal.getProcessor().getLogicalProcessorCount()+"");
@@ -46,12 +49,12 @@ public class Report {
         }
     }
 
-    public static void reportCR(String url, String identification, InstanceList i){
+    public static void reportCR(String url, String identification,Configuration configuration, InstanceList i){
         try {
             HttpRequest.Form f2 = HttpRequest.Form.form();
             f2.add("TYPE","CR");
             f2.add("IDENTIFY",identification);
-
+            f2.add("TOKEN",configuration.getAdminToken());
             int crid=0;
             List<Instance> il = i.getInstances();
             for (Instance instance:il ) {
@@ -66,7 +69,7 @@ public class Report {
                             String out = PasteUtils.paste(content);
                             if(out!=null){
                                 log.info("Crash uploaded to "+out+" and send to server database");
-                                f2.add("CrashReport_"+crid,out);
+                                f2.add("CrashReport_"+crid+";"+ instance.getName(),out);
                                 crid++;
                                 report.delete();
                             }

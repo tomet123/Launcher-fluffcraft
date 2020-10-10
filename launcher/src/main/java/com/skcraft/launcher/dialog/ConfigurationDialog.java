@@ -46,7 +46,8 @@ public class ConfigurationDialog extends JDialog {
     private final JTextField proxyUsernameText = new JTextField();
     private final JPasswordField proxyPasswordText = new JPasswordField();
     private final FormPanel advancedPanel = new FormPanel();
-    private final JTextField gameKeyText = new JTextField();
+    private final JTextField adminTeamUserText = new JTextField();
+    private final JPasswordField adminTeamPasswordText = new JPasswordField();
     private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
     private final JButton okButton = new JButton(SharedLocale.tr("button.ok"));
     private final JButton cancelButton = new JButton(SharedLocale.tr("button.cancel"));
@@ -85,7 +86,8 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(proxyPortText, "proxyPort");
         mapper.map(proxyUsernameText, "proxyUsername");
         mapper.map(proxyPasswordText, "proxyPassword");
-        mapper.map(gameKeyText, "gameKey");
+        mapper.map(adminTeamUserText, "adminTeamUser");
+        mapper.map(adminTeamPasswordText, "adminTeamPassword");
         mapper.map(sendHwInfoIdentify, "identification");
 
 
@@ -116,7 +118,8 @@ public class ConfigurationDialog extends JDialog {
         SwingHelper.removeOpaqueness(proxySettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.proxyTab"), SwingHelper.alignTabbedPane(proxySettingsPanel));
 
-        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.gameKey")), gameKeyText);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.adminUser")), adminTeamUserText);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.adminPassword")), adminTeamPasswordText);
         advancedPanel.addRow(sendHwInfoCheck);
         advancedPanel.addRow(new JLabel(SharedLocale.tr("options.identify")), sendHwInfoIdentify);
         SwingHelper.removeOpaqueness(advancedPanel);

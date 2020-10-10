@@ -36,11 +36,13 @@ public class Configuration {
     private int proxyPort = 8080;
     private String proxyUsername;
     private String proxyPassword;
-    private String gameKey;
     private boolean serverEnabled = false;
     private String serverHost;
     private int serverPort = 25565;
     private boolean reportHW = true;
+    private String adminTeamUser = "";
+    private String adminTeamPassword = "";
+    private String adminToken = "";
     private String identification = UUID.randomUUID().toString();
 
     @Override

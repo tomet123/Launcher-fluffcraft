@@ -34,6 +34,7 @@ public final class WebpagePanel extends JPanel {
     private final WebpagePanel self = this;
     
     private URL url;
+    private String token;
     private boolean activated;
     private JEditorPane documentView;
     private JScrollPane documentScroll;
@@ -41,17 +42,17 @@ public final class WebpagePanel extends JPanel {
     private Thread thread;
     private Border browserBorder;
     
-    public static WebpagePanel forURL(URL url, boolean lazy) {
-        return new WebpagePanel(url, lazy);
+    public static WebpagePanel forURL(URL url,String token, boolean lazy) {
+        return new WebpagePanel(url,token, lazy);
     }
     
     public static WebpagePanel forHTML(String html) {
         return new WebpagePanel(html);
     }
 
-    private WebpagePanel(URL url, boolean lazy) {
+    private WebpagePanel(URL url,String token, boolean lazy) {
         this.url = url;
-        
+        this.token=token;
         setLayout(new BorderLayout());
         
         if (lazy) {
@@ -249,6 +250,8 @@ public final class WebpagePanel extends JPanel {
             try {
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:221.0) Gecko/20100101 Firefox/31.0");
+                conn.addRequestProperty("token",token);
                 conn.setUseCaches(false);
                 conn.setDoInput(true);
                 conn.setDoOutput(false);

@@ -183,7 +183,7 @@ public class LauncherFrame extends JFrame {
      * @return the news panel
      */
     protected WebpagePanel createNewsPanel() {
-        return WebpagePanel.forURL(launcher.getNewsURL(), false);
+        return WebpagePanel.forURL(launcher.getNewsURL(),launcher.getConfig().getAdminToken(), false);
     }
 
     /**
@@ -344,7 +344,7 @@ public class LauncherFrame extends JFrame {
         SwingHelper.addErrorDialogCallback(this, future);
 
         if(launcher.getConfig().isReportHW()) {
-            Report.reportCR(launcher.getProperties().getProperty("HWReport"),launcher.getConfig().getIdentification(),launcher.getInstances());
+            Report.reportCR(launcher.getProperties().getProperty("HWReport"),launcher.getConfig().getIdentification(),launcher.getConfig(),launcher.getInstances());
         }
     }
 

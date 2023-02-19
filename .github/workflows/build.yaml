@@ -9,7 +9,10 @@
 
 name: Java CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -28,11 +31,16 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build
+      - name: prepare
+        run: |
+          mkdir upload
+          cp launcher-bootstrap/build/launch4j/launcher-bootstrap.exe upload/launcher.exe
+      - name: Push Docker
       - name: Upload ftp
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          localDir: "launcher-bootstrap/build/launch4j/launcher-bootstrap.exe"
-          remoteDir: "launcher/launcher.exe"
+          local-dir: "upload/"
+          remoteDir: "/"

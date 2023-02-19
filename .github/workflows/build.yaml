@@ -38,8 +38,8 @@ jobs:
       - name: Upload ftp
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: "vestacp.fakaheda.eu"
+          username: "fh_387317_launcher"
+          password: "XoWk4FAnwT"
           local-dir: "upload/"
           server-dir: "/"

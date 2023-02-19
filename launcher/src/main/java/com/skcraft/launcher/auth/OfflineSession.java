@@ -64,7 +64,7 @@ public class OfflineSession implements Session {
 
     @Override
     public boolean isOnline() {
-        return true;
+        return false;
     }
 
 }

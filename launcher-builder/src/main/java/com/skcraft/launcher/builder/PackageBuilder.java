@@ -110,6 +110,7 @@ public class PackageBuilder {
             applicator.register(pattern);
         }
 
+
         logSection("Scanning for .url.txt files...");
         FileUrlScanner urlScanner = new FileUrlScanner();
         urlScanner.walk(dir);

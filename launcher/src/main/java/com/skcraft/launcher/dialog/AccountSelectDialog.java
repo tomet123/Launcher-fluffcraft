@@ -163,6 +163,9 @@ public class AccountSelectDialog extends JDialog {
 		this.selected = result;
 		dispose();
 	}
+	private void setResult() {
+		dispose();
+	}
 
 	private void attemptMicrosoftLogin() {
 		String status = SharedLocale.tr("login.microsoft.seeBrowser");

@@ -172,12 +172,24 @@ public final class Launcher {
         return new MicrosoftLoginService(getProperties().getProperty("microsoftClientId"));
     }
 
+    /**
+     * Get the Offline login service.
+     *
+     * @return the Offline login service
+     */
+    public OfflineLoginService getOfflineLogin() {
+        return new OfflineLoginService();
+    }
+
     public LoginService getLoginService(UserType type) {
         if (type == UserType.MICROSOFT) {
             return getMicrosoftLogin();
-        } else {
+        } else if (type == UserType.MOJANG){
             return getYggdrasil();
+        } else if (type == UserType.LEGACY) {
+            return getOfflineLogin();
         }
+        return null;
     }
 
     /**

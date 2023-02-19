@@ -27,10 +27,12 @@ shadowJar {
 }
 
 build {
-    dependsOn(shadowJar)
+
+    dependsOn(createExe)
 }
 
 createExe {
+    dependsOn(shadowJar)
     mainClassName = 'com.skcraft.launcher.Bootstrap'
 //    icon = "${projectDir}/src/main/resources/com/skcraft/launcher/bootstrapper_icon.png"
     version =  project.version

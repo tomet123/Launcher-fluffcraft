@@ -34,7 +34,7 @@ public class OfflineSession implements Session {
 
     @Override
     public String getUuid() {
-        return (new UUID(0, 0)).toString();
+        return UUID.nameUUIDFromBytes(name.getBytes()).toString();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class OfflineSession implements Session {
 
     @Override
     public boolean isOnline() {
-        return false;
+        return true;
     }
 
 }

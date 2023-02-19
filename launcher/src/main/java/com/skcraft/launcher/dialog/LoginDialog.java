@@ -13,6 +13,7 @@ import com.skcraft.concurrency.ProgressObservable;
 import com.skcraft.launcher.Configuration;
 import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.auth.AuthenticationException;
+import com.skcraft.launcher.auth.OfflineSession;
 import com.skcraft.launcher.auth.Session;
 import com.skcraft.launcher.auth.YggdrasilLoginService;
 import com.skcraft.launcher.persistence.Persistence;
@@ -38,9 +39,12 @@ import java.util.concurrent.Callable;
 public class LoginDialog extends JDialog {
 
     private final Launcher launcher;
+
+    private final Boolean offline;
     @Getter private Session session;
 
     private final JLabel message = new JLabel(SharedLocale.tr("login.defaultMessage"));
+    private final JLabel messageOffline = new JLabel(SharedLocale.tr("login.defaultMessageOffline"));
     private final JTextField usernameText = new JTextField();
     private final JPasswordField passwordText = new JPasswordField();
     private final JButton loginButton = new JButton(SharedLocale.tr("login.login"));
@@ -55,10 +59,11 @@ public class LoginDialog extends JDialog {
      * @param owner the owner
      * @param launcher the launcher
      */
-    public LoginDialog(Window owner, @NonNull Launcher launcher, Optional<ReloginDetails> reloginDetails) {
+    public LoginDialog(Window owner, @NonNull Launcher launcher, Optional<ReloginDetails> reloginDetails, boolean offline) {
         super(owner, ModalityType.DOCUMENT_MODAL);
 
         this.launcher = launcher;
+        this.offline=offline;
 
         setTitle(SharedLocale.tr("login.title"));
         initComponents();
@@ -85,15 +90,27 @@ public class LoginDialog extends JDialog {
 
         loginButton.setFont(loginButton.getFont().deriveFont(Font.BOLD));
 
-        formPanel.addRow(message);
-        formPanel.addRow(new JLabel(SharedLocale.tr("login.idEmail")), usernameText);
-        formPanel.addRow(new JLabel(SharedLocale.tr("login.password")), passwordText);
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(26, 13, 13, 13));
 
-        buttonsPanel.addElement(recoverButton);
-        buttonsPanel.addGlue();
-        buttonsPanel.addElement(loginButton);
-        buttonsPanel.addElement(cancelButton);
+        formPanel.addRow(offline?messageOffline:message);
+        if(offline){
+            formPanel.addRow(new JLabel(SharedLocale.tr("login.username")), usernameText);
+
+            buttonsPanel.setBorder(BorderFactory.createEmptyBorder(26, 13, 13, 13));
+
+            buttonsPanel.addGlue();
+            buttonsPanel.addElement(loginButton);
+            buttonsPanel.addElement(cancelButton);
+        }else {
+            formPanel.addRow(new JLabel(SharedLocale.tr("login.idEmail")), usernameText);
+            formPanel.addRow(new JLabel(SharedLocale.tr("login.password")), passwordText);
+
+            buttonsPanel.setBorder(BorderFactory.createEmptyBorder(26, 13, 13, 13));
+
+            buttonsPanel.addElement(recoverButton);
+            buttonsPanel.addGlue();
+            buttonsPanel.addElement(loginButton);
+            buttonsPanel.addElement(cancelButton);
+        }
 
         add(formPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
@@ -112,12 +129,16 @@ public class LoginDialog extends JDialog {
     @SuppressWarnings("deprecation")
     private void prepareLogin() {
         if (!usernameText.getText().isEmpty()) {
-            String password = passwordText.getText();
+            if(offline){
+                attemptLoginOffline(usernameText.getText());
+            }else {
+                String password = passwordText.getText();
 
-            if (password == null || password.isEmpty()) {
-                SwingHelper.showErrorDialog(this, SharedLocale.tr("login.noPasswordError"), SharedLocale.tr("login.noPasswordTitle"));
-            } else {
-                attemptLogin(usernameText.getText(), password);
+                if (password == null || password.isEmpty()) {
+                    SwingHelper.showErrorDialog(this, SharedLocale.tr("login.noPasswordError"), SharedLocale.tr("login.noPasswordTitle"));
+                } else {
+                    attemptLogin(usernameText.getText(), password);
+                }
             }
         } else {
             SwingHelper.showErrorDialog(this, SharedLocale.tr("login.noLoginError"), SharedLocale.tr("login.noLoginTitle"));
@@ -144,17 +165,21 @@ public class LoginDialog extends JDialog {
         SwingHelper.addErrorDialogCallback(this, future);
     }
 
+    private void attemptLoginOffline(String username) {
+       setResult(new OfflineSession(username));
+    }
+
     private void setResult(Session session) {
         this.session = session;
         dispose();
     }
 
-    public static Session showLoginRequest(Window owner, Launcher launcher) {
-        return showLoginRequest(owner, launcher, null);
+    public static Session showLoginRequest(Window owner, Launcher launcher,boolean offline) {
+        return showLoginRequest(owner, launcher, null, offline);
     }
 
-    public static Session showLoginRequest(Window owner, Launcher launcher, ReloginDetails reloginDetails) {
-        LoginDialog dialog = new LoginDialog(owner, launcher, Optional.ofNullable(reloginDetails));
+    public static Session showLoginRequest(Window owner, Launcher launcher, ReloginDetails reloginDetails, boolean offline) {
+        LoginDialog dialog = new LoginDialog(owner, launcher, Optional.ofNullable(reloginDetails),offline);
         dialog.setVisible(true);
         return dialog.getSession();
     }

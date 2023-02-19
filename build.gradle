@@ -15,7 +15,13 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.skcraft'
-    version = '4.6-SNAPSHOT'
+    if (project.hasProperty('projVersion')) {
+        version = project.projVersion
+    } else {
+        version = '4.6-SNAPSHOT'
+    }
+
+
     compileJava.options.encoding = "UTF-8"
     compileTestJava.options.encoding = "UTF-8"
 

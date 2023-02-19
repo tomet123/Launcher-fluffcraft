@@ -34,13 +34,13 @@ jobs:
       - name: prepare
         run: |
           mkdir upload
-          cp launcher-bootstrap/build/launch4j/launcher-bootstrap.exe upload/launcher.exe
+          cp launcher-bootstrap/build/launch4j/launcher-bootstrap.exe upload/launcher/launcher.exe
       - name: Upload ftp
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: "vestacp.fakaheda.eu"
           protocol: ftps
           username: "fh_387317_launcher"
-          password: "XoWk4FAnwT"
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: "upload/"
           server-dir: "/"

@@ -41,10 +41,13 @@ jobs:
         run: |
           mkdir upload
           mkdir upload/download
+          mkdir upload/utils
           cp launcher-bootstrap/build/launch4j/launcher-bootstrap.exe upload/download/launcher.exe
           cp launcher-bootstrap/build/libs/launcher-bootstrap-* upload/download/launcher.jar
           echo "{\"version\":\"${BUILD}\",\"url\":\"https://futuretechcraft.cz/launcher/launcher/launcher.jar\"}" > upload/latest.json
           cp launcher-fancy/build/libs/launcher-fancy-* upload/launcher.jar
+          cp creator-tools/build/libs/creator-tools-* upload/creator-tools.jar
+          cp launcher-builder/build/libs/launcher-builder-* upload/launcher-builder.jar
         env:
           BUILD: ${{github.run_number}}
 

@@ -37,7 +37,7 @@ jobs:
           mkdir upload/download
           cp launcher-bootstrap/build/launch4j/launcher-bootstrap.exe upload/download/launcher.exe
           cp launcher-bootstrap/build/libs/launcher-bootstrap-* upload/download/launcher.jar
-          echo "{"version":"${BUILD}","url":"https://futuretechcraft.cz/launcher/launcher.jar"}" > upload/latest.json
+          echo "{"version":"${BUILD}","url":"https://futuretechcraft.cz/launcher/launcher/launcher.jar"}" > upload/latest.json
           cp launcher-fancy/build/libs/launcher-fancy-* upload/launcher.jar
         env:
           BUILD: ${{github.run_number}}

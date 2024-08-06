@@ -165,7 +165,7 @@ public class PackageBuilder {
 
                 if (basicProfile.isLegacy()) {
                     processor = new OldForgeLoaderProcessor();
-                } else if (basicProfile.getProfile().equalsIgnoreCase("forge")) {
+                } else {
                     processor = new ModernForgeLoaderProcessor();
                 }
             } else if (BuilderUtils.getZipEntry(jarFile, "fabric-installer.json") != null) {

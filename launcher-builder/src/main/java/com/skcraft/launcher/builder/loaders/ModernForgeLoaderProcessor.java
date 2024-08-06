@@ -73,6 +73,12 @@ public class ModernForgeLoaderProcessor implements ILoaderProcessor {
 					}
 				}
 
+				// Copy logging config
+				SidedData<VersionManifest.LoggingConfig> loggingConfig = info.getLogging();
+				if (loggingConfig != null) {
+					version.setLogging(loggingConfig);
+				}
+
 				// Copy main class
 				String mainClass = info.getMainClass();
 				if (mainClass != null) {
@@ -149,6 +155,22 @@ public class ModernForgeLoaderProcessor implements ILoaderProcessor {
 
 				// Add loader manifest to the map
 				manifest.getLoaders().put(loaderName, new LoaderManifest(profile.getLibraries(), profile.getData(), extraFiles));
+
+				// Find name of final patched library and mark it as excluded from download
+				// TODO: we should generalize this to all process outputs, really
+				SidedData<String> finalJars = profile.getData().get("PATCHED");
+				if (finalJars != null) {
+					String libraryName = finalJars.getClient();
+					libraryName = libraryName.substring(1, libraryName.length() - 1);
+
+					for (Library lib : result.getLoaderLibraries()) {
+						if (lib.matches(libraryName)) {
+							lib.setGenerated(true);
+							log.info(String.format("Setting generated flag on library '%s'", lib.getName()));
+							break;
+						}
+					}
+				}
 
 				// Add processors
 				manifest.getTasks().addAll(profile.toProcessorEntries(loaderName));

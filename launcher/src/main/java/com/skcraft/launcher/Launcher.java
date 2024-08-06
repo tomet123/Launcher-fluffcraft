@@ -105,7 +105,7 @@ public final class Launcher {
             }
         });
 
-        updateManager.checkForUpdate();
+        updateManager.checkForUpdate(null);
     }
 
     /**
@@ -413,8 +413,11 @@ public final class Launcher {
     /**
      * Show the launcher.
      */
-    public void showLauncherWindow() {
-        mainWindowSupplier.get().setVisible(true);
+    public Window showLauncherWindow() {
+        Window window = mainWindowSupplier.get();
+        window.setVisible(true);
+
+        return window;
     }
 
     /**

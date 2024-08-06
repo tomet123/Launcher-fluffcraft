@@ -8,6 +8,7 @@ package com.skcraft.launcher.model.minecraft;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -33,7 +34,8 @@ public class Library {
     private String comment;
 
     // Custom
-    private boolean locallyAvailable;
+    @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+    private boolean generated;
 
     public boolean matches(Environment environment) {
         boolean allow = false;
@@ -201,6 +203,12 @@ public class Library {
     }
 
     public void setName(String name) {
+        int classifierPos = name.indexOf("@");
+        if (classifierPos != -1) {
+            // Take off classifiers
+            name = name.substring(0, classifierPos);
+        }
+
         this.name = name;
 
         // [DEEP SIGH]
@@ -224,6 +232,20 @@ public class Library {
         if (value && getDownloads() == null) {
             setUrl("https://libraries.minecraft.net/"); // TODO get this from properties?
         }
+    }
+
+    /**
+     * Classifier-independent library name check
+     * @param mavenName Maven name of a library, possibly with a classifier
+     * @return True if this library is named 'mavenName'.
+     */
+    public boolean matches(String mavenName) {
+        int classifierPos = mavenName.indexOf('@');
+        if (classifierPos != -1) {
+            mavenName = mavenName.substring(0, classifierPos);
+        }
+
+        return this.name.equals(mavenName);
     }
 
     public static String mavenNameToPath(String mavenName) {

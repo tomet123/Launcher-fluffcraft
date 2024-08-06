@@ -249,6 +249,8 @@ public abstract class BaseUpdater {
         }
 
         for (Library library : allLibraries) {
+            if (library.isGenerated()) continue; // Skip generated libraries.
+
             if (library.matches(environment)) {
                 checkInterrupted();
 
@@ -282,7 +284,7 @@ public abstract class BaseUpdater {
         }
 
         // Use our custom logging config depending on what the manifest specifies
-        if (versionManifest.getLogging() != null) {
+        if (versionManifest.getLogging() != null && versionManifest.getLogging().getClient() != null) {
             VersionManifest.LoggingConfig config = versionManifest.getLogging().getClient();
 
             VersionManifest.Artifact file = config.getFile();

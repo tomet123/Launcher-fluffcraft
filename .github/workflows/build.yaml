@@ -51,12 +51,12 @@ jobs:
         env:
           BUILD: ${{github.run_number}}
 
-      - name: Upload ftp
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      - name: upload sftp
+        uses: datanomi/SFTP-Push@v.1.2.2.1h
         with:
-          server: "vestacp.fakaheda.eu"
-          protocol: ftps
-          username: "fh_387317_launcher"
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: "upload/"
-          server-dir: "launcher/"
+          username: "root"
+          server: "178.63.93.241"
+          ssh_private_key: ${{ secrets.SSH_KEY }}
+          local_path: "upload/"
+          remote_path: "/var/www/launcher/html/"
+          

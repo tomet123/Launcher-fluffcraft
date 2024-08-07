@@ -18,7 +18,7 @@ subprojects {
     if (project.hasProperty('projVersion')) {
         version = project.projVersion
     } else {
-        version = '4.6-SNAPSHOT'
+        version = '4.7-SNAPSHOT'
     }
 
 

@@ -51,12 +51,13 @@ jobs:
         env:
           BUILD: ${{github.run_number}}
 
-      - name: upload sftp
-        uses: datanomi/SFTP-Push@v.1.2.2.1h
+      - name: SFTP Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           username: "root"
           server: "178.63.93.241"
           ssh_private_key: ${{ secrets.SSH_KEY }}
-          local_path: "upload/"
+          local_path: "./upload/*"
           remote_path: "/var/www/launcher/html/"
+          delete_remote_files: false
           
